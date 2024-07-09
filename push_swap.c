@@ -25,8 +25,8 @@ void merge(int a[], int l, int m, int r) {
         R[j] = a[m + 1 + j];
         j++;
 
-    int i = 0
-     int j = 0
+    int i = 0;
+     int j = 0;
       int k = l;
     while (i < n1 && j < n2) {
         if (L[i] <= R[j]) {
@@ -54,6 +54,6 @@ void mergeSort(t_stack *a, int l, int r) {
     }
 }
 
-void push_swap_merge_sort(t_stack *a) {
+void push_swap_merge(t_stack *a) {
     mergeSort(a, 0, a->top);
 }
