@@ -1,110 +1,53 @@
-#include <stdio.h>
-#include <stdlib.h>
-
 typedef struct s_stack {
-    int content;
-    struct s_stack *prev;
-    struct s_stack *next;
+    int *array;
+    int top;
 } t_stack;
 
-typedef struct s_push_swap {
-    t_stack *a;
-    t_stack *b;
-} t_push_swap;
-
-t_stack *ft_new_stack(int content) {
-    t_stack *new_element = (t_stack *)malloc(sizeof(t_stack));
-    if (!new_element)
-        return NULL;
-    new_element->content = content;
-    new_element->prev = NULL;
-    new_element->next = NULL;
-    return new_element;
-}
-void push(t_stack **src, t_stack **dest) {
-    if (*src == NULL)
-        return;
-    t_stack *temp = *src;
-    *src = (*src)->next;
-    if (*src)
-        (*src)->prev = NULL;
-    temp->next = *dest;
-    if (*dest)
-        (*dest)->prev = temp;
-    *dest = temp;
+void push(t_stack *stack, int value) {
+    stack->array[++stack->top] = value;
 }
 
-void swap(t_stack *stack) {
-    if (stack == NULL || stack->next == NULL)
-        return;
-    int temp = stack->content;
-    stack->content = stack->next->content;
-    stack->next->content = temp;
+int pop(t_stack *stack) {
+    return stack->array[stack->top--];
 }
 
-void rotate(t_stack **stack) {
-    if (*stack == NULL || (*stack)->next == NULL)
-        return;
-    t_stack *temp = *stack;
-    *stack = (*stack)->next;
-    (*stack)->prev = NULL;
+void merge(int a[], int l, int m, int r) {
+    int n1 = m - l + 1;
+    int n2 = r - m;
+    int L[n1], R[n2];
 
-    t_stack *last = *stack;
-    while (last->next)
-        last = last->next;
-    last->next = temp;
-    temp->prev = last;
-    temp->next = NULL;
-}
+    for (int i = 0; i < n1; i++)
+        L[i] = a[l + i];
+    for (int j = 0; j < n2; j++)
+        R[j] = a[m + 1 + j];
 
-void change(t_stack **stack) {
-    if (*stack == NULL || (*stack)->next == NULL)
-        return;
-    t_stack *last = *stack;
-    while (last->next)
-        last = last->next;
-    last->prev->next = NULL;
-    last->prev = NULL;
-    last->next = *stack;
-    (*stack)->prev = last;
-    *stack = last;
-}
-int main(int argc, char **argv) {
-    if (argc < 2) {
-        return 0;
-    }
-
-    t_push_swap pushswap;
-    pushswap.a = NULL;
-    pushswap.b = NULL;
-    int i = 1;
-
-    while(i < argc) {
-        int res = ft_atoi(argv[i]);
-        t_stack *new_elem = ft_new_stack(res);
-        if (!new_elem) {
-            write(stderr, "Error\n", 6);
-            return 1;
+    int i = 0, j = 0, k = l;
+    while (i < n1 && j < n2) {
+        if (L[i] <= R[j]) {
+            a[k++] = L[i++];
+        } else {
+            a[k++] = R[j++];
         }
-        new_elem->next = pushswap.a;
-        if (pushswap.a)
-            pushswap.a->prev = new_elem;
-        pushswap.a = new_elem;
-        i++;
     }
 
-    sort(&pushswap);
-
-    while (pushswap.a) {
-        t_stack *temp = pushswap.a;
-        pushswap.a = pushswap.a->next;
-        free(temp);
-    }
-    while (pushswap.b) {
-        t_stack *temp = pushswap.b;
-        pushswap.b = pushswap.b->next;
-        free(temp);
+    while (i < n1) {
+        a[k++] = L[i++];
     }
 
-    return 0;
+    while (j < n2) {
+        a[k++] = R[j++];
+    }
+}
+
+void mergeSort(t_stack *a, int l, int r) {
+    if (l < r) {
+        int m = l + (r - l) / 2;
+        mergeSort(a, l, m);
+        mergeSort(a, m + 1, r);
+        merge(a->array, l, m, r);
+    }
+}
+
+void push_swap_merge_sort(t_stack *a) {
+    mergeSort(a, 0, a->top);
 }
