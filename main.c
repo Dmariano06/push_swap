@@ -9,7 +9,7 @@ int main() {
     push(&a, 2);
     push(&a, 5);
 
-    push_swap_merge_sort(&a);
+    push_swap_merge(&a);
     int i = 0;
 
     while(i <= a.top) {
