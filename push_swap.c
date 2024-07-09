@@ -11,7 +11,7 @@ int pop(t_stack *stack) {
     return stack->array[stack->top--];
 }
 
-void merge(int a[], int l, int m, int r) {
+void merge(int *a, int l, int m, int r) {
     int n1 = m - l + 1;
     int n2 = r - m;
     int i = 0;
