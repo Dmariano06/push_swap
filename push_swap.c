@@ -16,14 +16,18 @@ void merge(int a[], int l, int m, int r) {
     int n2 = r - m;
     int i = 0;
     int L[n1], R[n2];
+    int j = 0;
 
    while (i < n1)
         L[i] = a[l + i];
         i++;
-    for (int j = 0; j < n2; j++)
+    while( j < n2)
         R[j] = a[m + 1 + j];
+        j++;
 
-    int i = 0, j = 0, k = l;
+    int i = 0
+     int j = 0
+      int k = l;
     while (i < n1 && j < n2) {
         if (L[i] <= R[j]) {
             a[k++] = L[i++];
