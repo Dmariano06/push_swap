@@ -14,10 +14,12 @@ int pop(t_stack *stack) {
 void merge(int a[], int l, int m, int r) {
     int n1 = m - l + 1;
     int n2 = r - m;
+    int i = 0;
     int L[n1], R[n2];
 
-    for (int i = 0; i < n1; i++)
+   while (i < n1)
         L[i] = a[l + i];
+        i++;
     for (int j = 0; j < n2; j++)
         R[j] = a[m + 1 + j];
 
