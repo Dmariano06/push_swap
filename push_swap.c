@@ -1,63 +1,84 @@
-typedef struct s_stack {
-    int *array;
-    int top;
-} t_stack;
 
-void push(t_stack *stack, int value) {
-    stack->array[++stack->top] = value;
-}
-
-int pop(t_stack *stack) {
-    return stack->array[stack->top--];
-}
-
-void merge(int *a, int l, int m, int r) {
-    int n1 = m - l + 1;
-    int n2 = r - m;
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <fcntl.h>
+int main(int argc, char *argv[]) {
+    if (argc < 2) {
+        printf(stderr, "%s", argv[0]);
+        return 1;
+    }
+    int size = argc - 1;
+    int *a = malloc(size * sizeof(int));
+    if (a == NULL) {
+        return 0;
+    }
     int i = 0;
-    int L[n1], R[n2];
-    int j = 0;
-
-   while (i < n1)
-   {
-        L[i] = a[l + i];
+    while ( i < size) {
+        a[i] = atoi(argv[i + 1]);
         i++;
-   }
-    while( j < n2)
-    {
-        R[j] = a[m + 1 + j];
-        j++;
     }
+    push_swap(a, size);
+    i = 0;
+    while (i < size) {
+        printf("%d\n", a[i]);
+        i++;
+    }
+    return 0;
+}
+
+void push_swap(int *a, int size) {
+    if (size <= 5) {
+        first_sort(a, size);
+    } else {
+        second_sort(a, size);
+    }
+}
+
+void first_sort(int *a, int size) {
+    int i = 1;
+    while (i < size) {
+        int key = a[i];
+        int j = i - 1;
+        while (j >= 0 && a[j] > key) {
+            sa(a + j, 2);
+            j--;
+        }
+        i++;
+    }
+}
+
+void second_sort(int *a, int size) {
+    int b[size];
+    int top1 = size - 1;
+    int top2 = -1;
 
     int i = 0;
-     int j = 0;
-      int k = l;
-    while (i < n1 && j < n2) {
-        if (L[i] <= R[j]) {
-            a[k++] = L[i++];
-        } else {
-            a[k++] = R[j++];
+    while (i < size) {
+        int min = 0;
+        int j = 1;
+        while (j < size - i) {
+            if (a[j] < a[min]) {
+                min = j;
+            }
+            j++;
         }
+
+        int min_pos = min;
+        while (min_pos > 0) {
+            if (min_pos <= (size - i) / 2) {
+                ra(a, size - i);
+            } else {
+                rra(a, size - i);
+            }
+            min_pos--;
+        }
+
+        pb(a, b, &top1, &top2);
+        i++;
     }
 
-    while (i < n1) {
-        a[k++] = L[i++];
+    while (top2 >= 0) {
+        pa(a, b, &top1, &top2);
     }
-
-    while (j < n2) {
-        a[k++] = R[j++];
-    }
-}
-
-void mergeSort(t_stack *a, int l, int r) {
-    if (l < r) {
-        int m = l + (r - l) / 2;
-        mergeSort(a, l, m);
-        mergeSort(a, m + 1, r);
-        merge(a->array, l, m, r);
-    }
-}
-
-void push_swap_merge(t_stack *a) {
-    mergeSort(a, 0, a->top);
 }
