@@ -19,11 +19,15 @@ void merge(int a[], int l, int m, int r) {
     int j = 0;
 
    while (i < n1)
+   {
         L[i] = a[l + i];
         i++;
+   }
     while( j < n2)
+    {
         R[j] = a[m + 1 + j];
         j++;
+    }
 
     int i = 0;
      int j = 0;
